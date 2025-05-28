@@ -7,7 +7,7 @@
         <p>{{$product->price}}₽</p>
         @if($product->stock_quantity > 0)
             <form action="{{ route('orders.add') }}" method="POST">
-                @csfr
+                @csrf
                 <x-primary-button class="item-button">{{ __('В корзину') }}</x-primary-button>
                 <input hidden name="productId" value="{{ $product->id }}">
             </form>
