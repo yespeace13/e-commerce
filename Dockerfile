@@ -1,7 +1,7 @@
 FROM php:8.1-fpm
 
-ARG user=laravel
-ARG uid=1000
+ARG user
+ARG uid
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -23,12 +23,8 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # Create system user to run Composer and Artisan Commands
-RUN mkdir -p /home/$user && \
-    useradd -G www-data,root -u $uid -d /home/$user $user && \
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
-
-
-# Set working directory
-WORKDIR /var/www
 
 USER $user
