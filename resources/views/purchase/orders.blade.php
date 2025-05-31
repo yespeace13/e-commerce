@@ -1,6 +1,6 @@
 <x-app-layout>
     <section class="bg-[#FBF6F0] flex pt-32 justify-around">
-        <div class="flex flex-col justify-center">
+        <div class="flex flex-col justify-center gap-5">
             @if(sizeof($order->getItems())>0)
                 @foreach($order->getItems() as $item)
                     @php($product = $item->getProduct())

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 //use App\Http\Controllers\IndexController;
 use App\Http\Controllers\OrderController;
@@ -8,7 +9,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AdminController;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 // index
@@ -18,6 +22,7 @@ Route::get('/about-us', function (){
     return view('about-us');
 })->name('about-us');
 //products
+
 Route::get('/product', [ProductController::class, 'index'])->name('products');
 Route::get('/product/{id}', [ProductController::class, 'getProduct'])->name('products.show');
 //order
@@ -52,8 +57,15 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', function () {
-        return view('admin');
+        $orders = Order::all();
+        $categories_sales = Category::all();
+        return view('admin', compact('orders', 'categories_sales'));
     })->name('admin');
+
+
+
+    Route::post('/admin/complete', [AdminController::class, 'complete'])->name('admin.complete');
+    Route::post('/admin/remove', [AdminController::class, 'remove'])->name('admin.remove');
 
     Route::get('/product-create', [ProductController::class, 'showCreate'])->name('products.create');
     Route::post('/product-create', [ProductController::class, 'create'])->name('products.create');
@@ -62,6 +74,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/product-delete/{id}', [ProductController::class, 'delete'])->name('products.delete');
 
     Route::get('/reports/sales', [ReportController::class, 'report'])->name('report');
+
+    Route::resources([
+        'categories' => CategoryController::class
+    ]);
 });
 
 require __DIR__ . '/auth.php';

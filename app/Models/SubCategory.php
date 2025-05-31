@@ -21,6 +21,7 @@ class SubCategory extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
+        'category_name',
+        'category_id'
     ];
 }

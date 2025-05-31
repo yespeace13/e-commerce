@@ -15,33 +15,33 @@ services:
     networks:
       - commerce
 
-  db:
-    image: mysql:9.2.0
-    container_name: commerce-db
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    volumes:
-      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
-    networks:
-      - commerce
+#   db:
+#     image: mysql:9.2.0
+#     container_name: commerce-db
+#     restart: unless-stopped
+#     environment:
+#       MYSQL_DATABASE: ${DB_DATABASE}
+#       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+#       MYSQL_PASSWORD: ${DB_PASSWORD}
+#       MYSQL_USER: ${DB_USERNAME}
+#       SERVICE_TAGS: dev
+#       SERVICE_NAME: mysql
+#     volumes:
+#       - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+#     networks:
+#       - commerce
 
-  nginx:
-    image: nginx:alpine
-    container_name: commerce-nginx
-    restart: unless-stopped
-    ports:
-      - "8000:80"
-    volumes:
-      - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d
-    networks:
-      - commerce
+#   nginx:
+#     image: nginx:alpine
+#     container_name: commerce-nginx
+#     restart: unless-stopped
+#     ports:
+#       - "8000:80"
+#     volumes:
+#       - ./:/var/www
+#       - ./docker-compose/nginx:/etc/nginx/conf.d
+#     networks:
+#       - commerce
 
 networks:
   commerce:

@@ -19,32 +19,32 @@
             </div>
 
             <div class="grid grid-cols-5 gap-14">
-                <div class="">
+                <div>
                     <h1 class="text-4xl p-10">Фильтры:</h1>
                     <div>
                         <x-input-label class="text-xl" for="category" :value="__('Категории')" />
                         @php($name = 'category[]')
                         @foreach($categories as $category)
-                        @if(request()->category != null)
-                        @php($exist = in_array($category->id, request()->category))
-                        @else
-                        @php($exist = false)
-                        @endif
-                        @php($category['name'] = $category['category_name'])
-                        <x-checkbox :name="$name" :item="$category" :checked="$exist" />
+                            @if(request()->category != null)
+                                @php($exist = in_array($category->id, request()->category))
+                            @else
+                                @php($exist = false)
+                            @endif
+                            @php($category['name'] = $category['category_name'])
+                            <x-checkbox :name="$name" :item="$category" :checked="$exist" />
                         @endforeach
                     </div>
                     <div>
                         <x-input-label class="text-xl" for="subcategory" :value="__('Подкатегория')" />
                         @php($name = 'subcategory[]')
                         @foreach($subcategories as $subcategory)
-                        @if(request()->subcategory != null)
-                        @php($exist = in_array($subcategory->id, request()->subcategory))
-                        @else
-                        @php($exist = false)
-                        @endif
-                        @php($subcategory['name'] = $subcategory['category_name'])
-                        <x-checkbox :name="$name" :item="$subcategory" :checked="$exist" />
+                            @if(request()->subcategory != null)
+                                @php($exist = in_array($subcategory->id, request()->subcategory))
+                            @else
+                                @php($exist = false)
+                            @endif
+                            @php($subcategory['name'] = $subcategory['category_name'])
+                            <x-checkbox :name="$name" :item="$subcategory" :checked="$exist" />
                         @endforeach
                     </div>
 
@@ -63,57 +63,12 @@
                     </div>
                 </div>
 
-                <div
-                    class="grid grid-rows-[min-content] xl:grid-cols-5 lg:grid-cols-4 gap-5 col-span-4 md:grid-cols-3 sm:grid-cols-2">
+                <div class="display flex col-span-4 gap-5 flex-wrap">
                     @foreach($products as $product)
-                        <x-product-card class="col-span-1" :product="$product" />
+                        <x-product-card class="min-w-80" :product="$product" />
                     @endforeach
                 </div>
             </div>
         </form>
-        {{csrf_field()}}
     </section>
-    <script>
-        async function addItem(productId) {
-            console.log(productId)
-            const url = new URL("/orders/add-item", window.location.origin).href;
-            console.log(url)
-            try {
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                    },
-                    body: JSON.stringify({
-                        productId: productId
-                    }),
-                    credentials: 'same-origin' // Include cookies if needed
-                });
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log("Success:", data);
-            } catch (error) {
-                console.error(error.message);
-            }
-        }
-
-        // document.querySelectorAll('.item-button').forEach(item => {
-        //     item.addEventListener('click', function() {
-        //         addItem(item.id)
-        //     });
-        // })
-
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.item-button').forEach(item => {
-                item.addEventListener('click', function () {
-                    addItem(item.id); // Better than using ID
-                });
-            });
-        });
-    </script>
 </x-app-layout>

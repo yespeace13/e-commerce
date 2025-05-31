@@ -36,7 +36,8 @@ class ProductController extends Controller
         }
         if ($request['category'] != null) {
             $products->join('sub_categories', 'products.sub_category_id', 'sub_categories.id')
-                ->whereIn('sub_categories.category_id', $request['category']);
+                ->whereIn('sub_categories.category_id', $request['category'])
+                ->select('products.*');
         }
         return $products->get();
     }
